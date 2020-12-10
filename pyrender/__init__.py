@@ -1,2 +1,2 @@
-from core import *
-from vectors import *
+from .core import *
+from .vectors import *

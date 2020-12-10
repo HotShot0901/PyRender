@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np
-from vectors import *
+from .vectors import *
 
 class Color:
     r = 0
