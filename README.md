@@ -12,8 +12,7 @@ OR
 
 You can Download the latest ZIP or any release.
 
-`python test.py`
-To check your Installation.
+Run `python test.py` (in CMD) to check your Installation.
 
 
 ## Usage
