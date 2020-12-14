@@ -85,10 +85,34 @@ class PyRender:
             c_int
         ]
 
+        self.lib.circleInArray.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_int
+        ]
+
         self.frames = []
         self.currFrame = np.zeros((dimension[0] * dimension[1] * 3,), dtype=int)
 
         self.setBackground(bgColor.asArray())
+
+    def drawCircle(self, pos, r, color, drawMode):
+        center = Vector2()
+
+        if drawMode == DrawMode.Top:
+            center = pos + r
+        
+        elif drawMode == DrawMode.Center:
+            center = pos
+
+        elif drawMode == DrawMode.Bottom:
+            center = pos - r
+
+        self.lib.circleInArray(self.currFrame, color.asArray(), int(center.x), int(center.y), int(r), self.dimension[0], self.dimension[1])
 
     def drawRect(self, pos, dimension, color, drawMode):
         center = Vector2(0, 0)
