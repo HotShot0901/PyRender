@@ -12,4 +12,8 @@ extern "C" {
     __declspec(dllexport) circleInArray(int* arr, int* color, int posX, int posY, int r, int width, int height) {
         circleInArray_cpp(arr, color, posX, posY, r, width, height);
     }
+
+    __declspec(dllexport) lineInArray(int* arr, int* color, int startX, int startY, int endX, int endY, int thickness, int width, int height) {
+        lineInArray_cpp(arr, color, startX, startY, endX, endY, thickness, width, height);
+    }
 }

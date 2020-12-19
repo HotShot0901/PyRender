@@ -2,20 +2,33 @@ from pyrender import *
 
 renderer = PyRender((640, 360), bgColor=Color(0, 0, 0))
 
-for i in range(50, int(590/4)):
-    renderer.drawCircle(Vector2(i*4, 50), 50, Color(255, 255, 255), DrawMode.Bottom)
-    renderer.nextFrame(delCurr=True)
+# renderer.drawLine(Vector2(100, 100), Vector2(200, 200), 4, Color(255, 255, 255))
 
-for i in range(50, int(310/4)):
-    renderer.drawCircle(Vector2(590, i*4), 50, Color(225, 225, 15), DrawMode.Bottom)
-    renderer.nextFrame(delCurr=True)
+for _ in range(100):
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 180 + _), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 180 - _), 2, Color(255, 255, 255))
 
-for i in range(50, int(590/4)):
-    renderer.drawCircle(Vector2(640 - i*4, 310), 50, Color(15, 225, 225), DrawMode.Bottom)
     renderer.nextFrame(delCurr=True)
+    
+for _ in range(100):
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 280 ), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 80), 2, Color(255, 255, 255))
 
-for i in range(50, int(310/4)):
-    renderer.drawCircle(Vector2(50, 360 - i*4), 50, Color(225, 15, 225), DrawMode.Bottom)
+    renderer.drawLine(Vector2(320, 180), Vector2(320 + _, 180 - _), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(320 - _, 180 + _), 2, Color(255, 255, 255))
+
+    renderer.nextFrame(delCurr=True)
+    
+for _ in range(100):
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 280 ), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(320, 80), 2, Color(255, 255, 255))
+
+    renderer.drawLine(Vector2(320, 180), Vector2(420, 80), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(220, 280), 2, Color(255, 255, 255))
+
+    renderer.drawLine(Vector2(320, 180), Vector2(320 + _, 180), 2, Color(255, 255, 255))
+    renderer.drawLine(Vector2(320, 180), Vector2(320 - _, 180), 2, Color(255, 255, 255))
+
     renderer.nextFrame(delCurr=True)
 
 renderer.render("F:\\Python\\Normal\\PyRender")

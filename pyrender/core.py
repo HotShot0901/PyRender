@@ -95,11 +95,29 @@ class PyRender:
             c_int
         ]
 
+        self.lib.lineInArray.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_int
+        ]
+
         self.frames = []
         self.currFrame = np.zeros((dimension[0] * dimension[1] * 3,), dtype=int)
 
         self.setBackground(bgColor.asArray())
 
+    def drawLine(self, start, end, thickness, color):
+        if start.sqrMeg() < end.sqrMeg():
+            self.lib.lineInArray(self.currFrame, color.asArray(), int(start.x), int(start.y), int(end.x), int(end.y), int(thickness), self.dimension[0], self.dimension[1])
+        else:
+            self.lib.lineInArray(self.currFrame, color.asArray(), int(end.x), int(end.y), int(start.x), int(start.y), int(thickness), self.dimension[0], self.dimension[1])
+        
     def drawCircle(self, pos, r, color, drawMode):
         center = Vector2()
 

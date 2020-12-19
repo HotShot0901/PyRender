@@ -1,3 +1,6 @@
+#include <cmath>
+#include <iostream>
+
 void clearArray_cpp(int* arr, int* color, int width, int height) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -32,5 +35,21 @@ void circleInArray_cpp(int* arr, int* color, int posX, int posY, int r, int widt
                 }
             }
         }
+    }
+}
+
+void lineInArray_cpp(int* arr, int* color, int startX, int startY, int endX, int endY, int thickness, int width, int height) {
+    circleInArray_cpp(arr, color, startX, startY, thickness/2, width, height);
+
+    int x = (startX + endX) / 2;
+    int y = (startY + endY) / 2;
+
+    int megStartSqr = startX*startX + startY*startY;
+    int megMidSqr = x*x + y*y;
+    int thicknessSqr = (thickness)*(thickness);
+
+    if ((megMidSqr - megStartSqr) > thicknessSqr) {
+        lineInArray_cpp(arr, color, startX, startY, x, y, thickness, width, height);
+        lineInArray_cpp(arr, color, x, y, endX, endY, thickness, width, height);
     }
 }
