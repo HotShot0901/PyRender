@@ -95,7 +95,7 @@ void triangleInArray_cpp(int* arr, int* color, int x1, int y1, int x2, int y2, i
             area += triangleArea(_x, _y, x1, y1, x3, y3);
             area += triangleArea(_x, _y, x1, y1, x2, y2);
 
-            if (totalArea > area && _x >= 0 && _y >= 0 && _y < height && _x < width) {
+            if (totalArea >= area && _x >= 0 && _y >= 0 && _y < height && _x < width) {
                 arr[3*_y*width + 3*_x + 0] = color[2];
                 arr[3*_y*width + 3*_x + 1] = color[1];
                 arr[3*_y*width + 3*_x + 2] = color[0];
