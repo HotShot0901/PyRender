@@ -123,6 +123,10 @@ class PyRender:
 
         self.setBackground(bgColor.asArray())
 
+    def drawQuad(self, point1, point2, point3, point4, color):
+        self.drawTriangle(point1, point2, point4, color)
+        self.drawTriangle(point2, point3, point4, color)
+
     def drawTriangle(self, point1, point2, point3, color):
         self.lib.triangleInArray(
                                     self.currFrame, color.asArray(), 
