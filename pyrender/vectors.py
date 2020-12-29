@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from ctypes import Structure, c_int
 
 class Vector2:
     # Variabls
@@ -179,3 +180,16 @@ class Vector2:
 
     def getInt(self):
         return Vector2(int(self.x), int(self.y))
+
+    def asStructure(self):
+        return Vector2_str(self)
+
+class Vector2_str(Structure):
+    _fields_ = [
+        ("x", c_int),
+        ("y", c_int)
+    ]
+    
+    def __init__(self, v: Vector2):
+        self.x = int(v.x)
+        self.y = int(v.y)    

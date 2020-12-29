@@ -70,50 +70,60 @@ class PyRender:
         self.lib.clearArray.argtypes = [
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
-            c_int,
-            c_int
+
+            c_int, c_int
         ]
 
-        self.lib.squareInArray.argtypes = [
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int
-        ]
-
-        self.lib.circleInArray.argtypes = [
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int
-        ]
-
-        self.lib.lineInArray.argtypes = [
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
-            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int,
-            c_int
-        ]
-
-        self.lib.triangleInArray.argtypes = [
+        self.lib.drawRect.argtypes = [
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
 
-            c_int, c_int,
-            c_int, c_int,
-            c_int, c_int,
+            Vector2_str,
+            Vector2_str,
+
+            c_int, c_int
+        ]
+
+        self.lib.drawCircle.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+
+            Vector2_str,
+            c_int,
+            
+            c_int, c_int
+        ]
+
+        self.lib.drawLine.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+
+            Vector2_str,
+            Vector2_str,
+
+            c_int,
+            c_int, c_int
+        ]
+
+        self.lib.drawTriangle.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+
+            Vector2_str,
+            Vector2_str,
+            Vector2_str,
+
+            c_int, c_int
+        ]
+
+        self.lib.drawQuad.argtypes = [
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
+            np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(3,)),
+
+            Vector2_str,
+            Vector2_str,
+            Vector2_str,
+            Vector2_str,
 
             c_int, c_int
         ]
@@ -124,52 +134,69 @@ class PyRender:
         self.setBackground(bgColor.asArray())
 
     def drawQuad(self, point1, point2, point3, point4, color):
-        self.drawTriangle(point1, point2, point4, color)
-        self.drawTriangle(point2, point3, point4, color)
+        color = color.asArray()
+
+        point1 = Vector2_str(point1)
+        point2 = Vector2_str(point2)
+        point3 = Vector2_str(point3)
+        point4 = Vector2_str(point4)
+
+        self.lib.drawQuad(self.currFrame, color, point1, point2, point3, point4, self.dimension[0], self.dimension[1])
 
     def drawTriangle(self, point1, point2, point3, color):
-        self.lib.triangleInArray(
-                                    self.currFrame, color.asArray(), 
+        color = color.asArray()
 
-                                    int(point1.x), int(point1.y), 
-                                    int(point2.x), int(point2.y), 
-                                    int(point3.x), int(point3.y),
+        p1 = point1.asStructure()
+        p2 = point2.asStructure()
+        p3 = point3.asStructure()
 
-                                    self.dimension[0], self.dimension[1]
-                                )
+        self.lib.drawTriangle(self.currFrame, color, p1, p2, p3, self.dimension[0], self.dimension[1])
 
     def drawLine(self, start, end, thickness, color):
+        color = color.asArray()
+
         if start.sqrMeg() < end.sqrMeg():
-            self.lib.lineInArray(self.currFrame, color.asArray(), int(start.x), int(start.y), int(end.x), int(end.y), int(thickness), self.dimension[0], self.dimension[1])
+            start = start.asStructure()
+            end = end.asStructure()
+
+            self.lib.drawLine(self.currFrame, color, start, end, int(thickness), self.dimension[0], self.dimension[1])
         else:
-            self.lib.lineInArray(self.currFrame, color.asArray(), int(end.x), int(end.y), int(start.x), int(start.y), int(thickness), self.dimension[0], self.dimension[1])
+            start = start.asStructure()
+            end = end.asStructure()
+            
+            self.lib.drawLine(self.currFrame, color, end, start, int(thickness), self.dimension[0], self.dimension[1])
         
     def drawCircle(self, pos, r, color, drawMode):
         center = Vector2()
 
         if drawMode == DrawMode.Top:
             center = pos + r
-        
         elif drawMode == DrawMode.Center:
             center = pos
-
         elif drawMode == DrawMode.Bottom:
             center = pos - r
 
-        self.lib.circleInArray(self.currFrame, color.asArray(), int(center.x), int(center.y), int(r), self.dimension[0], self.dimension[1])
+        color = color.asArray()
+        center = center.asStructure()
+
+        self.lib.drawCircle(self.currFrame, color, center, int(r), self.dimension[0], self.dimension[1])
 
     def drawRect(self, pos, dimension, color, drawMode):
         center = Vector2(0, 0)
 
         if drawMode == DrawMode.Top:
-            center = pos
+            center = pos + Vector2(dimension.x / 2, dimension.y / 2)
         elif drawMode == DrawMode.Center:
-            center = pos - Vector2(dimension.x / 2, dimension.y / 2)
+            center = pos
         elif drawMode == DrawMode.Bottom:
-            center = pos - Vector2(dimension.x, dimension.y)
+            center = pos - Vector2(dimension.x / 2, dimension.y / 2)
 
+        color = color.asArray()
+
+        center = Vector2_str(center)
+        dimension = Vector2_str(dimension)
         
-        self.lib.squareInArray(self.currFrame, color.asArray(), int(center.x), int(center.y), int(dimension.x), int(dimension.y), int(self.dimension[0]), self.dimension[1])
+        self.lib.drawRect(self.currFrame, color, center, dimension, int(self.dimension[0]), self.dimension[1])
 
     def setBackground(self, color):
         self.lib.clearArray(self.currFrame, color, self.dimension[0], self.dimension[1])

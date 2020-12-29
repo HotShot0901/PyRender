@@ -1,4 +1,7 @@
 __pycache__
+.vscode
+
 [Ff]rames
-*.mp4
 [Rr]eleases
+
+*.mp4

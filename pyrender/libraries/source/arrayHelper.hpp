@@ -1,5 +1,20 @@
 #include <cmath>
 
+struct Vector2 {
+    int x, y;
+
+
+    Vector2() {
+        x = 0;
+        y = 0;
+    }
+
+    Vector2(int _x, int _y) {
+        x = _x;
+        y = _y;
+    }
+};
+
 void clearArray_cpp(int* arr, int* color, int width, int height) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -11,50 +26,50 @@ void clearArray_cpp(int* arr, int* color, int width, int height) {
     }
 }
 
-void squareInArray_cpp(int* arr, int* color, int posX, int posY, int w, int l, int width, int height) {
-    for (int y = 0; y < l; y++) {
-        for (int x = 0; x < w; x++) {
-            if ((posX + x) >= 0 && (posY + y) >= 0 && (posY + y) < height && (posX + x) < width) {
-                arr[3*(posY + y)*width + 3*(posX + x) + 0] = color[2];
-                arr[3*(posY + y)*width + 3*(posX + x) + 1] = color[1];
-                arr[3*(posY + y)*width + 3*(posX + x) + 2] = color[0];
+void drawRect_cpp(int* arr, int* color, Vector2 pos, Vector2 dim, int width, int height) {
+    for (int y = -dim.y / 2; y < dim.y / 2; y++) {
+        for (int x = -dim.x / 2; x < dim.x / 2; x++) {
+            if ((pos.x + x) >= 0 && (pos.y + y) >= 0 && (pos.y + y) < height && (pos.x + x) < width) {
+                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 2] = color[0];
+                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 0] = color[2];
+                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 1] = color[1];
             }
         }
     }
 }
 
-void circleInArray_cpp(int* arr, int* color, int posX, int posY, int r, int width, int height) {
+void drawCircle_cpp(int* arr, int* color, Vector2 pos, int r, int width, int height) {
     for (int y = -r; y < r; y++) {
         for (int x = -r; x < r; x++) {
             if ((x*x + y*y) < (r*r)) {
-                if ((posX + x) >= 0 && (posY + y) >= 0 && (posY + y) < height && (posX + x) < width) {
-                    arr[3*(posY + y)*width + 3*(posX + x) + 0] = color[2];
-                    arr[3*(posY + y)*width + 3*(posX + x) + 1] = color[1];
-                    arr[3*(posY + y)*width + 3*(posX + x) + 2] = color[0];
+                if ((pos.y + x) >= 0 && (pos.y + y) >= 0 && (pos.y + y) < height && (pos.x + x) < width) {
+                    arr[3*(pos.y + y)*width + 3*(pos.x + x) + 0] = color[2];
+                    arr[3*(pos.y + y)*width + 3*(pos.x + x) + 1] = color[1];
+                    arr[3*(pos.y + y)*width + 3*(pos.x + x) + 2] = color[0];
                 }
             }
         }
     }
 }
 
-void lineInArray_cpp(int* arr, int* color, int startX, int startY, int endX, int endY, int thickness, int width, int height) {
-    circleInArray_cpp(arr, color, startX, startY, thickness/2, width, height);
+void drawLine_cpp(int* arr, int* color, Vector2 start, Vector2 end, int thickness, int width, int height) {
+    drawCircle_cpp(arr, color, start, thickness/2, width, height);
 
-    int x = (startX + endX) / 2;
-    int y = (startY + endY) / 2;
+    int x = (start.x + end.x) / 2;
+    int y = (start.y + end.y) / 2;
 
-    int megStartSqr = startX*startX + startY*startY;
+    int megStartSqr = start.x*start.x + start.y*start.y;
     int megMidSqr = x*x + y*y;
     int thicknessSqr = (thickness)*(thickness);
 
     if ((megMidSqr - megStartSqr) > thicknessSqr) {
-        lineInArray_cpp(arr, color, startX, startY, x, y, thickness, width, height);
-        lineInArray_cpp(arr, color, x, y, endX, endY, thickness, width, height);
+        drawLine_cpp(arr, color, start, Vector2(x, y), thickness, width, height);
+        drawLine_cpp(arr, color, Vector2(x, y), end, thickness, width, height);
     }
 }
 
-float triangleArea(int x1, int y1, int x2, int y2, int x3, int y3) {
-    return abs(( x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) ) / 2);
+float triangleArea(Vector2 p1, Vector2 p2, Vector2 p3) {
+    return abs(( p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y) ) / 2);
 }
 
 int min(int a, int b, int c) {
@@ -75,31 +90,37 @@ int max(int a, int b, int c) {
         return c;
 }
 
-void triangleInArray_cpp(int* arr, int* color, int x1, int y1, int x2, int y2, int x3, int y3, int width, int height) {
-    float totalArea = triangleArea(x1, y1, x2, y2, x3, y3);
+void drawTriangle_cpp(int* arr, int* color, Vector2 p1, Vector2 p2, Vector2 p3, int width, int height) {
+    float totalArea = triangleArea(p1, p2, p3);
 
-    int dimX = max(x1, x2, x3) - min(x1, x2, x3) + 1;
-    int dimY = max(y1, y2, y3) - min(y1, y2, y3) + 1;
+    int dimX = max(p1.x, p2.x, p3.x) - min(p1.x, p2.x, p3.x) + 1;
+    int dimY = max(p1.y, p2.y, p3.y) - min(p1.y, p2.y, p3.y) + 1;
 
-    int posX = min(x1, x2, x3);
-    int posY = min(y1, y2, y3);
+    int posX = min(p1.x, p2.x, p3.x);
+    int posY = min(p1.y, p2.y, p3.y);
 
     for (int x = 0; x < dimX; x++) {
         for (int y = 0; y < dimY; y++) {
-            int _x = x + posX;
-            int _y = y + posY;
+            Vector2 v;
+            v.x = x + posX;
+            v.y = y + posY;
 
             float area = 0;
 
-            area += triangleArea(_x, _y, x2, y2, x3, y3);
-            area += triangleArea(_x, _y, x1, y1, x3, y3);
-            area += triangleArea(_x, _y, x1, y1, x2, y2);
+            area += triangleArea(v, p2, p3);
+            area += triangleArea(v, p1, p3);
+            area += triangleArea(v, p1, p2);
 
-            if (totalArea >= area && _x >= 0 && _y >= 0 && _y < height && _x < width) {
-                arr[3*_y*width + 3*_x + 0] = color[2];
-                arr[3*_y*width + 3*_x + 1] = color[1];
-                arr[3*_y*width + 3*_x + 2] = color[0];
+            if (totalArea >= area && v.x >= 0 && v.y >= 0 && v.y < height && v.x < width) {
+                arr[3*v.y*width + 3*v.x + 0] = color[2];
+                arr[3*v.y*width + 3*v.x + 1] = color[1];
+                arr[3*v.y*width + 3*v.x + 2] = color[0];
             }
         }
     }
+}
+
+void drawQuad_cpp(int *arr, int *color, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, int width, int height) {
+    drawTriangle_cpp(arr, color, p1, p2, p4, width, height);
+    drawTriangle_cpp(arr, color, p2, p3, p4, width, height);
 }

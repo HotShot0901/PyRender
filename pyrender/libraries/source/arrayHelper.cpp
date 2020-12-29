@@ -1,23 +1,27 @@
 #include "arrayHelper.hpp"
 
 extern "C" {
-    __declspec(dllexport) clearArray(int* arr, int* color, int width, int height) { 
+    __declspec(dllexport) void clearArray(int* arr, int* color, int width, int height) { 
         clearArray_cpp(arr, color, width, height); 
     }
 
-    __declspec(dllexport) squareInArray(int* arr, int* color, int posX, int posY, int l, int w, int width, int height) {
-        squareInArray_cpp(arr, color, posX, posY, l, w, width, height);
+    __declspec(dllexport) void drawRect(int* arr, int* color, Vector2 pos, Vector2 dim, int width, int height) {
+        drawRect_cpp(arr, color, pos, dim, width, height);
     }
 
-    __declspec(dllexport) circleInArray(int* arr, int* color, int posX, int posY, int r, int width, int height) {
-        circleInArray_cpp(arr, color, posX, posY, r, width, height);
+    __declspec(dllexport) void drawCircle(int* arr, int* color, Vector2 pos, int r, int width, int height) {
+        drawCircle_cpp(arr, color, pos, r, width, height);
     }
 
-    __declspec(dllexport) lineInArray(int* arr, int* color, int startX, int startY, int endX, int endY, int thickness, int width, int height) {
-        lineInArray_cpp(arr, color, startX, startY, endX, endY, thickness, width, height);
+    __declspec(dllexport) void drawLine(int* arr, int* color, Vector2 start, Vector2 end, int thickness, int width, int height) {
+        drawLine_cpp(arr, color, start, end, thickness, width, height);
     }
 
-    __declspec(dllexport) triangleInArray(int* arr, int* color, int x1, int y1, int x2, int y2, int x3, int y3, int width, int height) {
-        triangleInArray_cpp(arr, color, x1, y1, x2, y2, x3, y3, width, height);
+    __declspec(dllexport) void drawTriangle(int* arr, int* color, Vector2 p1, Vector2 p2, Vector2 p3, int width, int height) {
+        drawTriangle_cpp(arr, color, p1, p2, p3, width, height);
+    }
+
+    __declspec(dllexport) void drawQuad(int* arr, int* color, Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, int width, int height) {
+        drawQuad_cpp(arr, color, p1, p2, p3, p4, width, height);
     }
 }
