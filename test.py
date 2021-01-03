@@ -1,9 +1,17 @@
 from pyrender import *
 
-renderer = PyRender((640, 360), bgColor=Color(0, 0, 0))
-renderer.drawTriangle(Vector2(100, 100), Vector2(200, 110), Vector2(145, 135), Color(255, 255, 255))
+renderer = PyRender((640, 360))
 
-for _ in range(120):
-    renderer.nextFrame()
+renderer.translate(320, 180)
+
+for _ in range(360):
+    # renderer.rotate(math.radians(0))
+    # renderer.drawRect(Vector2(100, 0), Vector2(100, 100), Colors.White, DrawMode.Center)
+
+    renderer.rotate(math.radians(_))
+    # renderer.drawLine(Vector2(0, 0), Vector2(100, 0), 2, Colors.White)
+    renderer.drawRect(Vector2(100, 0), Vector2(100, 100), Colors.White, DrawMode.Center)
+
+    renderer.nextFrame(delCurr=True)
 
 renderer.render("F:\\Python\\Normal\\PyRender")

@@ -26,13 +26,21 @@ void clearArray_cpp(int* arr, int* color, int width, int height) {
     }
 }
 
-void drawRect_cpp(int* arr, int* color, Vector2 pos, Vector2 dim, int width, int height) {
+void drawRect_cpp(int* arr, int* color, Vector2 pos, Vector2 dim, float rot, int width, int height) {
     for (int y = -dim.y / 2; y < dim.y / 2; y++) {
         for (int x = -dim.x / 2; x < dim.x / 2; x++) {
-            if ((pos.x + x) >= 0 && (pos.y + y) >= 0 && (pos.y + y) < height && (pos.x + x) < width) {
-                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 2] = color[0];
-                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 0] = color[2];
-                arr[3*(pos.y + y)*width + 3*(pos.x + x) + 1] = color[1];
+            int _x = x;
+            int _y = y;
+
+            if (rot != 0) {
+                _x = int(cos(rot)*x - sin(rot)*_y);
+                _y = int(sin(rot)*x + cos(rot)*_y);
+            }
+
+            if ((pos.x + _x) >= 0 && (pos.y + _y) >= 0 && (pos.y + _y) < height && (pos.x + _x) < width) {
+                arr[3*(pos.y + _y)*width + 3*(pos.x + _x) + 2] = color[0];
+                arr[3*(pos.y + _y)*width + 3*(pos.x + _x) + 0] = color[2];
+                arr[3*(pos.y + _y)*width + 3*(pos.x + _x) + 1] = color[1];
             }
         }
     }

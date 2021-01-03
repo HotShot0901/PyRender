@@ -5,8 +5,8 @@ extern "C" {
         clearArray_cpp(arr, color, width, height); 
     }
 
-    __declspec(dllexport) void drawRect(int* arr, int* color, Vector2 pos, Vector2 dim, int width, int height) {
-        drawRect_cpp(arr, color, pos, dim, width, height);
+    __declspec(dllexport) void drawRect(int* arr, int* color, Vector2 pos, Vector2 dim, float rot, int width, int height) {
+        drawRect_cpp(arr, color, pos, dim, rot, width, height);
     }
 
     __declspec(dllexport) void drawCircle(int* arr, int* color, Vector2 pos, int r, int width, int height) {

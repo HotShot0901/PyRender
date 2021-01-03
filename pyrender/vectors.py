@@ -124,8 +124,8 @@ class Vector2:
             other = np.array(other)
 
             if other.shape == (2, 2):
-                self.x *= self.x*other[0][0] + self.y*other[0][1]
-                self.y *= self.x*other[1][0] + self.y*other[1][1]
+                self.x = self.x*other[0][0] + self.y*other[0][1]
+                self.y = self.x*other[1][0] + self.y*other[1][1]
 
             elif other.shape == (2,):
                 return self.x*other[0] + self.y*other[1]
@@ -143,9 +143,9 @@ class Vector2:
         self.y *= scaler
 
     def normalize(self):
-        angle = self.angle_y()
-        self.x = math.cos(angle)
-        self.y = math.sin(angle)
+        angle = self.angle_x()
+        self.x = math.sin(angle)
+        self.y = math.cos(angle)
     
     def setMeg(self, meg):
         self.normalize()
@@ -172,6 +172,14 @@ class Vector2:
         if self.x == 0:
             return math.atan(0)
         return math.atan(self.y / self.x)
+
+    def rotate(self, angle) -> None:
+        matrix = [
+            [math.cos(angle), -math.sin(angle)],
+            [math.sin(angle),  math.cos(angle)]
+        ]
+
+        self *= matrix
 
     # Conversion
     def __str__(self) -> str:

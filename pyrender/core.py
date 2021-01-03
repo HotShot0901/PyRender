@@ -39,6 +39,9 @@ class Color:
         s = "R: {0:<5} G: {1:<5} B: {2:<5}".format(self.r, self.g, self.b)
         return s
 
+class Colors(os.abc.ABC):
+    White = Color(255, 255, 255)
+
 class Shapes:
     Rectangle = 0
 
@@ -56,12 +59,18 @@ class PyRender:
     currFrame = None
     lib = None
 
+    rotation = None
+    translation = None
+
     bgColor = None
 
     # Methods
     def __init__(self, dimension, bgColor: Color=Color(0, 0, 0), fps: int=30):
         self.dimension = dimension
         self.fps = fps
+
+        self.rotation = 0
+        self.translation = Vector2()
 
         self.bgColor = bgColor
 
@@ -81,6 +90,7 @@ class PyRender:
             Vector2_str,
             Vector2_str,
 
+            c_float,
             c_int, c_int
         ]
 
@@ -154,6 +164,9 @@ class PyRender:
 
     def drawLine(self, start, end, thickness, color):
         color = color.asArray()
+        
+        start += self.translation
+        end += self.translation
 
         if start.sqrMeg() < end.sqrMeg():
             start = start.asStructure()
@@ -193,13 +206,21 @@ class PyRender:
 
         color = color.asArray()
 
+        center += self.translation
         center = Vector2_str(center)
         dimension = Vector2_str(dimension)
         
-        self.lib.drawRect(self.currFrame, color, center, dimension, int(self.dimension[0]), self.dimension[1])
+        self.lib.drawRect(self.currFrame, color, center, dimension, self.rotation, self.dimension[0], self.dimension[1])
 
     def setBackground(self, color):
         self.lib.clearArray(self.currFrame, color, self.dimension[0], self.dimension[1])
+
+    def rotate(self, angle):
+        self.rotation = angle
+
+    def translate(self, x, y):
+        self.translation.x = x
+        self.translation.y = y
 
     def nextFrame(self, delCurr=False):
         self.frames.append(self.currFrame.reshape((self.dimension[1], self.dimension[0], 3)))
