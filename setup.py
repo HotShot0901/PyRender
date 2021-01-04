@@ -19,12 +19,14 @@ setuptools.setup(
         ('lib\\site-packages\\pyrender\\libraries', ["pyrender\\libraries\\2d_drawCalls.dll"]),
         ('lib\\site-packages\\pyrender\\libraries', ["pyrender\\libraries\\3d_drawCalls.dll"])
     ],
-    install_requires=['opencv-python', 'numpy'],
+    install_requires=[
+        'opencv-python', 'numpy'
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: win-amd64",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.6'
 )
