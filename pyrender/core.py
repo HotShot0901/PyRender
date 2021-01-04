@@ -1,5 +1,6 @@
 import cv2
 import os
+import sys
 import numpy as np
 from ctypes import cdll, c_int, c_float
 from .vectors import *
@@ -42,9 +43,6 @@ class Color:
 class Colors(os.abc.ABC):
     White = Color(255, 255, 255)
 
-class Shapes:
-    Rectangle = 0
-
 class DrawMode:
     Top = 0
     Center = 1
@@ -74,7 +72,7 @@ class PyRender:
 
         self.bgColor = bgColor
 
-        self.lib = cdll.LoadLibrary(os.path.abspath("./pyrender/libraries/bin/arrayHelper.dll"))
+        self.lib = cdll.LoadLibrary("{0}\\Lib\\site-packages\\pyrender\\libraries\\2d_drawCalls.dll".format(sys.prefix))
 
         self.lib.clearArray.argtypes = [
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
@@ -164,7 +162,7 @@ class PyRender:
 
     def drawLine(self, start, end, thickness, color):
         color = color.asArray()
-        
+
         start += self.translation
         end += self.translation
 

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="hs-pyrender", # Replace with your own username
-    version="0.1.0.dev1",
+    version="0.2.0.dev1",
     author="Arnav Choudhary",
     author_email="contact.hot.shor.1234@gmail.com",
     description="A rndering Library made in python",
@@ -15,12 +15,16 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     license='MIT',
     keywords='render PyRender 3d',
+    data_files=[
+        ('lib\\site-packages\\pyrender\\libraries', ["pyrender\\libraries\\2d_drawCalls.dll"]),
+        ('lib\\site-packages\\pyrender\\libraries', ["pyrender\\libraries\\3d_drawCalls.dll"])
+    ],
     install_requires=['opencv-python', 'numpy'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Operating System :: win-amd64",
     ],
     python_requires='>=3.6',
 )

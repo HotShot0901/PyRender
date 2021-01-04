@@ -1,7 +1,9 @@
 __pycache__
 .vscode
+hs_pyrender.egg-info
 
 [Ff]rames
 [Rr]eleases
+[Bb]uild
 
 *.mp4

@@ -1,4 +1,4 @@
-#include "arrayHelper.hpp"
+#include "2d_drawCalls.hpp"
 
 extern "C" {
     __declspec(dllexport) void clearArray(int* arr, int* color, int width, int height) { 
