@@ -5,10 +5,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="hs-pyrender", # Replace with your own username
-    version="0.2.0.dev1",
+    version="0.3.0.dev",
     author="Arnav Choudhary",
     author_email="contact.hot.shor.1234@gmail.com",
-    description="A rndering Library made in python",
+    description="A rendering Library made in python",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/HotShot0901/PyRender",
@@ -26,7 +26,7 @@ setuptools.setup(
         'Development Status :: 3 - Alpha',
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: win-amd64",
+        "Operating System :: Microsoft :: Windows",
     ],
     python_requires='>=3.6'
 )

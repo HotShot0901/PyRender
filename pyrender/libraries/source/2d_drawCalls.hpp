@@ -18,7 +18,6 @@ struct Vector2 {
 void clearArray_cpp(int* arr, int* color, int width, int height) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            // RGB to BGR
             arr[3*y*width + 3*x + 0] = color[2];
             arr[3*y*width + 3*x + 1] = color[1];
             arr[3*y*width + 3*x + 2] = color[0];

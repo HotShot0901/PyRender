@@ -5,6 +5,8 @@ import numpy as np
 from ctypes import cdll, c_int, c_float
 from .vectors import *
 
+dist = False
+
 class Color:
     r = 0
     g = 0
@@ -72,7 +74,10 @@ class PyRender:
 
         self.bgColor = bgColor
 
-        self.lib = cdll.LoadLibrary("{0}\\Lib\\site-packages\\pyrender\\libraries\\2d_drawCalls.dll".format(sys.prefix))
+        if dist:
+            self.lib = cdll.LoadLibrary("{0}\\Lib\\site-packages\\pyrender\\libraries\\2d_drawCalls.dll".format(sys.prefix))
+        else:
+            self.lib = cdll.LoadLibrary("./pyrender/libraries/2d_drawCalls.dll")
 
         self.lib.clearArray.argtypes = [
             np.ctypeslib.ndpointer(dtype=int, ndim=1, shape=(dimension[0] * dimension[1] * 3,)),
@@ -249,3 +254,18 @@ class PyRender:
             videoWriter.write(frame)
 
         videoWriter.release()
+
+
+class PyRender_3D:
+    # Variables
+    dimension = None
+    fps = None
+
+    frames = None
+    currFrame = None
+    lib = None
+
+    rotation = None
+    translation = None
+
+    bgColor = None
